@@ -1,31 +1,3 @@
-document.addEventListener("DOMContentLoaded", function() {
-    
-    // JS test
-    let body = document.getElementsByTagName('body')[0]
-    JSTest(body);
-    
-    body.append(document.createElement('br'));
-
-    // JQuery test
-    JQueryTest($('body'));
-})
-
-/**
- * Function to test if JS is working.
- */
-function JSTest(target) {   
-    let span = document.createElement("span");
-    span.innerHTML = "JS test pass";
-    target.appendChild(span);
-}
-
-/**
- * Function to test if JQuery is working.
- */
-function JQueryTest(target) {
-    target.append('<span>JQuery test pass</span>');
-}
-
 /**
  * Calculates average FGU loss severity.
  * @param {Number} sigma Pareto Type I scale parameter.
@@ -131,21 +103,55 @@ function FrequencySeverityCost(sigma, alpha, baseCount, baseExcess, limit, exces
     return [cost, rate];
 }
 
-// Calcualtions Functions Tests
+$('document').ready(function(){
+    
+    // Listen for click on add layer button.
+    $('.layer-add').click(function() {
 
-let sigma = 1;
-let alpha = 0.8;
-let baseCount = 3;
-let baseRate = 123000;
-let baseLimit = 25;
-let baseExcess = 25;
-let limit = 75;
-let excess = 75;
+        let layer = $(this).siblings('table').children('tbody').children().last();
+        layer.clone().appendTo(layer.parent());
 
-console.log(CappedSeverity(sigma, alpha, baseExcess));
-console.log(LayerSeverity(sigma, alpha, limit, excess));
-console.log(IlfFactor(sigma, alpha, baseLimit, baseExcess, limit, excess));
-console.log(RateRelativity(sigma, alpha, baseLimit, baseExcess, limit, excess));
-console.log(ExceedenceProbability(sigma, alpha, excess));
-console.log(BaseRateILFCost(sigma, alpha, baseRate, baseLimit, baseExcess, limit, excess));
-console.log(FrequencySeverityCost(sigma, alpha, baseCount, baseExcess, limit, excess));
+    });
+
+    // Listen for changes to limit or excess inputs.
+    $('.layer-input').change(function() {
+        
+        let layer = $(this).closest('.layer');
+
+        // Update the layer description when limit or excess inputs change.
+        layer.children('.layer-description').text(SetLayerDescriptionOnChange($(this)));
+
+        // Update the layer cost when limit or excess inputs change but only when rate change is also an input.
+        if (layer.find('.rate-input').length > 0) {
+            layer.children('.layer-cost').text(SetLayerCostOnChange($(this)));
+        }
+
+    });
+
+    // Listen for changes to the rate input.
+    $('.rate-input').change(function() {
+        
+        // Update the layer cost when rate input changes.
+        $(this).closest('.layer').children('.layer-cost').text(SetLayerCostOnChange($(this)));
+    });
+
+});
+
+/**
+ * Parses a string from Limit and Excess FGU layer inputs.
+ * @param {Element} layer The <input class="layer-input"> element.
+ * @returns {String} Limit xs Excess FGU
+ */
+function SetLayerDescriptionOnChange(layerInput) {
+    let layer = layerInput.closest('.layer').children();
+    let limit = layer.filter('.layer-limit').children('.layer-input').val();
+    let excess = layer.filter('.layer-excess').children('.layer-input').val();
+    return `${limit}m xs ${excess}m`;
+}
+
+function SetLayerCostOnChange(layerInput) {
+    let layer = layerInput.closest('.layer').children();
+    let limit = layer.filter('.layer-limit').children('.layer-input').val();
+    let rate = layer.filter('.layer-rate').children('.rate-input').val();
+    return ( rate / 1000000 ) * limit
+}

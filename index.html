@@ -12,6 +12,79 @@
 </head>
 <body>
 
+    <div id="analysis-area">
+        <div id="analysis-1">
+            <div id="method-area">
+                <div id="method-buttons">
+
+                </div>
+                <div id="method-inputs">
+                    <div id="method-inputs-ilf">
+
+                    </div>
+                    <div id="method-inputs-baserateilf">
+                        <table>
+                                <thead>
+                                    <th>
+                                        <tr>
+                                            <td>Base Limit (millions)</td>
+                                            <td>Base Excess FGU (millions)</td>
+                                            <td>Base Description</td>
+                                            <td>Base Rate (units per million)</td>
+                                            <td>Base Cost (millions)</td>
+                                        </tr>
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    <tr class="layer">
+                                        <td class="layer-limit"><input type="number" class="layer-input"></td>
+                                        <td class="layer-excess"><input type="number" class="layer-input"></td>
+                                        <td class="layer-description"></td>
+                                        <td class="layer-rate"><input type="number" class="rate-input"></td>
+                                        <td class="layer-cost"></td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+            
+                                </tfoot>
+                            </table>
+                    </div>
+                    <div id="method-inputs-frequencyseverity">
+                    
+                    </div>        
+                </div>
+            </div>
+            <div id="layer-area">
+                <button class="layer-add">Add Layer</button>
+                <table>
+                    <thead>
+                        <th>
+                            <tr>
+                                <td>Limit (millions)</td>
+                                <td>Excess FGU (millions)</td>
+                                <td>Description</td>
+                                <td>Rate (units per million)</td>
+                                <td>Cost (millions)</td>
+                            </tr>
+                        </th>
+                    </thead>
+                    <tbody>
+                        <tr class="layer">
+                            <td class="layer-limit"><input type="number" class="layer-input"></td>
+                            <td class="layer-excess"><input type="number" class="layer-input"></td>
+                            <td class="layer-description"></td>
+                            <td class="layer-cost"></td>
+                            <td class="layer-rate"></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        
+    </div>
+    
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script> -->
     <script src="assets/js/jquery-3.5.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
