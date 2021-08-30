@@ -72,7 +72,7 @@ function RateRelativity(sigma, alpha, limit1, excess1, limit2, excess2) {
  */
 function ExceedenceProbability(sigma, alpha, excess) {
     let ep = ( sigma / excess ) ** alpha; 
-    console.log(['ExceedenceProbability', sigma, alpha, ep]);
+    console.log(['ExceedenceProbability', sigma, alpha, excess, ep]);
     return ep;
 }
 
@@ -118,6 +118,30 @@ function FrequencySeverityCost(sigma, alpha, baseCount, baseExcess, limit, exces
 
 $('document').ready(function(){
 
+    $('input').keypress(function(event) {
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if(keycode == '13'){
+            let analysis = $(this).closest('.analysis');
+            SetAllLayersCost(analysis);
+        }
+    });
+    
+    $('input[name="method"]').change(function() {
+        console.log("hi");
+        $('.test').hide();
+        console.log($(this));
+        let analysis = $(this).closest('.analysis');
+        if ($(this).val() === "0") {
+            analysis.find('.method-inputs-baserate').show();
+            analysis.find('.method-inputs-frequency').hide();
+        } else if ($(this).val() === "1") {
+            analysis.find('.method-inputs-baserate').hide();
+            analysis.find('.method-inputs-frequency').show();
+        }
+        SetAllLayersCost(analysis);
+
+    });
+
     // Listen for click on add layer buttons.
     $('.layer-buttons-add').click(function() {
         let oldLayer = $(this).closest('.layer-area').find('tbody tr').last();
@@ -154,34 +178,48 @@ $('document').ready(function(){
     });
 
     // Listen for change to rate for base rate + ilf method.
-    $('.method-inputs-baserateilf input[name="rate"]').change(function() {
+    $('.method-inputs-baserate input[name="rate"]').change(function() {
         console.log("Base Rate Change")
         // Recalculate all layers in the analaysis
         analysis = $(this).closest('.analysis');
         layer = analysis.find('.method-area tbody tr')
         ConvertRateToCost(layer)
         SetAllLayersCost(analysis);
-
     });
 
     // Listen for change to limit for base rate + ilf method.
-    $('.method-inputs-baserateilf input[name="limit"]').change(function() {
+    $('.method-inputs-baserate input[name="limit"]').change(function() {
         console.log("Base Limit Change")
         // Recalculate all layers in the analaysis
         analysis = $(this).closest('.analysis');
         layer = analysis.find('.method-area tbody tr')
         ConvertRateToCost(layer)
         SetAllLayersCost(analysis);
-
     });
 
     // Listen for change to excess for base rate + ilf method.
-    $('.method-inputs-baserateilf input[name="excess"]').change(function() {
+    $('.method-inputs-baserate input[name="excess"]').change(function() {
         console.log("Base Excess Change")
         // Recalculate all layers in the analaysis
         analysis = $(this).closest('.analysis');
         SetAllLayersCost(analysis);
     });
+
+        // Listen for change to count for frequency + severity method.
+        $('.method-inputs-frequency input[name="count"]').change(function() {
+            console.log("Base Count Change")
+            // Recalculate all layers in the analaysis
+            analysis = $(this).closest('.analysis');
+            SetAllLayersCost(analysis);
+        });
+    
+        // Listen for change to excess for frequency + severity method.
+        $('.method-inputs-frequency input[name="excess"]').change(function() {
+            console.log("Base Excess Change")
+            // Recalculate all layers in the analaysis
+            analysis = $(this).closest('.analysis');
+            SetAllLayersCost(analysis);
+        });
 
     // Listen for change to layers limit.
     $('.layer-area input[name="limit"]').change(function() {
@@ -209,13 +247,13 @@ function ConvertRateToCost(layer) {
 
 function GetMethodInputs(method, analysis) {
     if (method === "0") {
-        let baseRate = parseFloat(analysis.find('.method-inputs-baserateilf input[name="rate"]').val());
-        let baseLimit = parseFloat(analysis.find('.method-inputs-baserateilf input[name="limit"]').val());
-        let baseExcess = parseFloat(analysis.find('.method-inputs-baserateilf input[name="excess"]').val());
+        let baseRate = parseFloat(analysis.find('.method-inputs-baserate input[name="rate"]').val());
+        let baseLimit = parseFloat(analysis.find('.method-inputs-baserate input[name="limit"]').val());
+        let baseExcess = parseFloat(analysis.find('.method-inputs-baserate input[name="excess"]').val());
         return [baseRate, baseLimit, baseExcess];
     } else if (method === "1") {
-        let baseCount = parseFloat(analysis.find('.method-inputs-frequencyseverity input[name="count"]').val());
-        let baseExcess = parseFloat(analysis.find('.method-inputs-frequencyseverity input[name="excess"]').val());
+        let baseCount = parseFloat(analysis.find('.method-inputs-frequency input[name="count"]').val());
+        let baseExcess = parseFloat(analysis.find('.method-inputs-frequency input[name="excess"]').val());
         return [baseCount, baseExcess];
     }
 }
@@ -240,11 +278,14 @@ function SetLayerCost(layer) {
     let method = analysis.find('input[name="method"]:checked').val();
     if (method === "0") {
         let methodInputs = GetMethodInputs(method, analysis);                
-        let cost = BaseRateILFCost(ilfInputs[0], ilfInputs[1], methodInputs[0], methodInputs[1], methodInputs[2], layerInputs[0], layerInputs[1])
+        let cost = BaseRateILFCost(ilfInputs[0], ilfInputs[1], methodInputs[0], methodInputs[1], methodInputs[2], layerInputs[0], layerInputs[1]);
         layer.find('input[name="rate"]').val(String(Math.round(cost[1])));
         layer.find('input[name="cost"]').val(String(Math.round( cost[0] *  1000 ) / 1000));
     } else if (method === "1") {
-
+        let methodInputs = GetMethodInputs(method, analysis);
+        let cost = FrequencySeverityCost(ilfInputs[0], ilfInputs[1], methodInputs[0], methodInputs[1], layerInputs[0], layerInputs[1]);
+        layer.find('input[name="rate"]').val(String(Math.round(cost[1])));
+        layer.find('input[name="cost"]').val(String(Math.round( cost[0] *  1000 ) / 1000));
     }
 }
 

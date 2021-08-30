@@ -11,24 +11,40 @@
     <title>Excess Casualty Calculator</title>
 </head>
 <body>
-
     <div class="analysis-area">
-        <div id="analysis-1" class="analysis">
+        <h3>Analysis List</h3>
+        <div class="analysis-buttons">
+            <button type="button" class="analysis-buttons-add btn btn-secondary btn-md">Add</button>
+            <button type="button" class="analysis-buttons-remove btn btn-secondary btn-md">Remove</button>
+        </div>
+        <div class="analysis">
             <div class="method-area">
                 <div class="method-select">
+                    <h4>Method Pick</h4>
                     <form>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input method-select-baserate" type="radio" name="method" value="0" checked>
+                            <label class="form-check-label">Base Rate & ILF</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input method-select-frequency" type="radio" name="method" value="1">
+                            <label class="form-check-label">Frequency & Severity</label>
+                        </div>
+                        <!--
                         <div>
-                            <input class="method-select-baserateilf" type="radio" name="method" value="0">
-                            <label for="method-select-baserateilf">Base Rate & ILF</label>
+                            <input class="method-select-baserate" type="radio" name="method" value="0" checked="checked">
+                            <label for="method-select-baserate">Base Rate & ILF</label>
                         </div>
                         <div>
-                            <input class="method-select-frequencyseverity" type="radio" name="method" value="1">
-                            <label for="method-select-frequencyseverity">Frequency & Severity</label>
+                            <input class="method-select-frequency" type="radio" name="method" value="1">
+                            <label for="method-select-frequency">Frequency & Severity</label>
                         </div>
+                        -->
                     </form>
                 </div>
                 <div class="method-inputs">
                     <div class="method-inputs-ilf">
+                        <h4>ILF/Severity Pick</h4>
                         <table class="table">
                             <thead>
                                 <tr>
@@ -47,8 +63,9 @@
                             </tfoot>
                         </table>
                     </div>
-                    <div class="method-inputs-baserateilf">
-                        <table class="table layer-table">
+                    <div class="method-inputs-baserate bg-dark text-light">
+                        <h4>Base Rate Pick</h4>
+                        <table class="table layer-table text-light">
                             <thead>
                                 <tr>
                                     <th>Limit</th>
@@ -99,15 +116,46 @@
                             </tfoot>
                         </table>
                     </div>
-                    <div class="method-inputs-frequencyseverity">
-                    
+                    <div class="method-inputs-frequency bg-dark text-light" style="display:none">
+                        <h4>Frequency Pick</h4>
+                        <table class="table layer-table text-light">
+                            <thead>
+                                <tr>
+                                    <th>Count</th>
+                                    <th>Excess</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="input-group">
+                                            <input class="form-control" type="number" name="count" value="1" min="0">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">#</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="input-group">
+                                            <input class="form-control" type="number" name="excess" value="1" min="0">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">m</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
                     </div>        
                 </div>
             </div>
             <div class="layer-area">
+                <h4>Layer List</h4>
                 <div class="layer-buttons">
-                    <button type="button" class="layer-buttons-add btn btn-primary btn-sm">Add</button>
-                    <button type="button" class="layer-buttons-remove btn btn-primary btn-sm">Remove</button>
+                    <button type="button" class="layer-buttons-add btn btn-secondary btn-md">Add</button>
+                    <button type="button" class="layer-buttons-remove btn btn-secondary btn-md">Remove</button>
                 </div>
                 <table class="table layer-table">
                     <thead>
@@ -123,7 +171,7 @@
                         <tr class="layer">
                             <td class="layer-limit">
                                 <div class="input-group">
-                                    <input class="form-control layer-input" type="number" name="limit" min="0">
+                                    <input class="form-control layer-input" type="number" name="limit" min="0" value="25">
                                     <div class="input-group-append">
                                         <span class="input-group-text">m</span>
                                     </div>
@@ -132,7 +180,7 @@
                             <td>xs</td>
                             <td class="layer-excess">
                                 <div class="input-group">
-                                    <input class="form-control layer-input" type="number" name="excess" min="0">
+                                    <input class="form-control layer-input" type="number" name="excess" min="0" value="25">
                                     <div class="input-group-append">
                                         <span class="input-group-text">m</span>
                                     </div>
