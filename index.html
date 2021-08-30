@@ -12,7 +12,7 @@
 </head>
 <body>
     <div class="analysis-area">
-        <h3>Analysis List</h3>
+        <h3>Analyses</h3>
         <div class="analysis-buttons">
             <button type="button" class="analysis-buttons-add btn btn-secondary btn-md">Add</button>
             <button type="button" class="analysis-buttons-remove btn btn-secondary btn-md">Remove</button>
@@ -33,11 +33,11 @@
                     </form>
                 </div>
                 <div class="method-inputs">
-                    <div class="method-inputs-baserate bg-dark text-light">
+                    <div class="method-inputs-baserate">
                         <h4>Base Rate Pick</h4>
                         <h6>Pick your base layer (limit and excess) and the base rate (rate) per risk per policy year.</h6>
                         <p>Your base rate pick must include exposure adjustments for the associated base layer pick.</p>
-                        <table class="table layer-table text-light">
+                        <table class="table layer-table">
                             <thead>
                                 <tr>
                                     <th>Limit</th>
@@ -88,11 +88,11 @@
                             </tfoot>
                         </table>
                     </div>
-                    <div class="method-inputs-frequency bg-dark text-light" style="display:none">
+                    <div class="method-inputs-frequency" style="display:none">
                         <h4>Frequency Pick</h4>
                         <h6>Pick your large loss threshold FGU (excess) and the average number of large losses (count) per risk per policy year.</h6>
                         <p>Your frequency pick must include exposure adjustments for the associated excess pick.</p>
-                        <table class="table layer-table text-light">
+                        <table class="table layer-table">
                             <thead>
                                 <tr>
                                     <th>Count</th>
@@ -123,7 +123,7 @@
                             </tfoot>
                         </table>
                     </div>
-                    <div class="method-inputs-ilf bg-light text-dark">
+                    <div class="method-inputs-ilf">
                         <h4>ILF/Severity Pick</h4>
                         <h6>Pick your large loss FGU threshold (scale) and the large loss distribution (shape).</h6>
                         <p>Your shape pick must include exposure adjustments not already included in the base rate or frequency pick. Your shape pick must be greater than zero (and never one). The lower/higher the shape pick, the heavier/lighter the large loss distribution.</p>
@@ -148,7 +148,9 @@
                 </div>
             </div>
             <div class="layer-area">
-                <h4>Layer List</h4>
+                <h4>Layers</h4>
+                <h6>Pick the layers that you want to price. Use the buttons to add remove layers.</h6>
+                <p>Pricing will update when you change your selected method, your picks or your layer limits and excesses.</p>
                 <div class="layer-buttons">
                     <button type="button" class="layer-buttons-add btn btn-secondary btn-md">Add</button>
                     <button type="button" class="layer-buttons-remove btn btn-secondary btn-md">Remove</button>
