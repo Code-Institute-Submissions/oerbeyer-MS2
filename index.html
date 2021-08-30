@@ -30,41 +30,13 @@
                             <input class="form-check-input method-select-frequency" type="radio" name="method" value="1">
                             <label class="form-check-label">Frequency & Severity</label>
                         </div>
-                        <!--
-                        <div>
-                            <input class="method-select-baserate" type="radio" name="method" value="0" checked="checked">
-                            <label for="method-select-baserate">Base Rate & ILF</label>
-                        </div>
-                        <div>
-                            <input class="method-select-frequency" type="radio" name="method" value="1">
-                            <label for="method-select-frequency">Frequency & Severity</label>
-                        </div>
-                        -->
                     </form>
                 </div>
                 <div class="method-inputs">
-                    <div class="method-inputs-ilf">
-                        <h4>ILF/Severity Pick</h4>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Scale</th>
-                                    <th>Shape</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><input class="method-inputs-ilf-scale" type="number" name="ilfScale" value="1"></td>
-                                    <td><input class="method-inputs-ilf-shape" type="number" name="ilfShape" value="0.8"></td>
-                                </tr>
-                            </tbody>
-                            <tfoot>
-
-                            </tfoot>
-                        </table>
-                    </div>
                     <div class="method-inputs-baserate bg-dark text-light">
                         <h4>Base Rate Pick</h4>
+                        <h6>Pick your base layer (limit and excess) and the base rate (rate) per risk per policy year.</h6>
+                        <p>Your base rate pick must include exposure adjustments for the associated base layer pick.</p>
                         <table class="table layer-table text-light">
                             <thead>
                                 <tr>
@@ -118,6 +90,8 @@
                     </div>
                     <div class="method-inputs-frequency bg-dark text-light" style="display:none">
                         <h4>Frequency Pick</h4>
+                        <h6>Pick your large loss threshold FGU (excess) and the average number of large losses (count) per risk per policy year.</h6>
+                        <p>Your frequency pick must include exposure adjustments for the associated excess pick.</p>
                         <table class="table layer-table text-light">
                             <thead>
                                 <tr>
@@ -148,7 +122,29 @@
                             <tfoot>
                             </tfoot>
                         </table>
-                    </div>        
+                    </div>
+                    <div class="method-inputs-ilf bg-light text-dark">
+                        <h4>ILF/Severity Pick</h4>
+                        <h6>Pick your large loss FGU threshold (scale) and the large loss distribution (shape).</h6>
+                        <p>Your shape pick must include exposure adjustments not already included in the base rate or frequency pick. Your shape pick must be greater than zero (and never one). The lower/higher the shape pick, the heavier/lighter the large loss distribution.</p>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Scale</th>
+                                    <th>Shape</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input class="method-inputs-ilf-scale" type="number" name="ilfScale" value="1"></td>
+                                    <td><input class="method-inputs-ilf-shape" type="number" name="ilfShape" value="0.8"></td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
             </div>
             <div class="layer-area">
