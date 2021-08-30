@@ -12,69 +12,148 @@
 </head>
 <body>
 
-    <div id="analysis-area">
-        <div id="analysis-1">
-            <div id="method-area">
-                <div id="method-buttons">
-
+    <div class="analysis-area">
+        <div id="analysis-1" class="analysis">
+            <div class="method-area">
+                <div class="method-select">
+                    <form>
+                        <div>
+                            <input class="method-select-baserateilf" type="radio" name="method" value="0">
+                            <label for="method-select-baserateilf">Base Rate & ILF</label>
+                        </div>
+                        <div>
+                            <input class="method-select-frequencyseverity" type="radio" name="method" value="1">
+                            <label for="method-select-frequencyseverity">Frequency & Severity</label>
+                        </div>
+                    </form>
                 </div>
-                <div id="method-inputs">
-                    <div id="method-inputs-ilf">
+                <div class="method-inputs">
+                    <div class="method-inputs-ilf">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Scale</th>
+                                    <th>Shape</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input class="method-inputs-ilf-scale" type="number" name="ilfScale" value="1"></td>
+                                    <td><input class="method-inputs-ilf-shape" type="number" name="ilfShape" value="0.8"></td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
 
+                            </tfoot>
+                        </table>
                     </div>
-                    <div id="method-inputs-baserateilf">
-                        <table>
-                                <thead>
-                                    <th>
-                                        <tr>
-                                            <td>Base Limit (millions)</td>
-                                            <td>Base Excess FGU (millions)</td>
-                                            <td>Base Description</td>
-                                            <td>Base Rate (units per million)</td>
-                                            <td>Base Cost (millions)</td>
-                                        </tr>
-                                    </th>
-                                </thead>
-                                <tbody>
-                                    <tr class="layer">
-                                        <td class="layer-limit"><input type="number" class="layer-input"></td>
-                                        <td class="layer-excess"><input type="number" class="layer-input"></td>
-                                        <td class="layer-description"></td>
-                                        <td class="layer-rate"><input type="number" class="rate-input"></td>
-                                        <td class="layer-cost"></td>
-                                    </tr>
-                                </tbody>
-                                <tfoot>
-            
-                                </tfoot>
-                            </table>
+                    <div class="method-inputs-baserateilf">
+                        <table class="table layer-table">
+                            <thead>
+                                <tr>
+                                    <th>Limit</th>
+                                    <th></th>
+                                    <th>Excess</th>
+                                    <th>Rate</th>
+                                    <th>Cost</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="layer">
+                                    <td class="layer-limit">
+                                        <div class="input-group">
+                                            <input class="form-control layer-input" type="number" name="limit" value="25" min="0">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">m</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>xs</td>
+                                    <td class="layer-excess">
+                                        <div class="input-group">
+                                            <input class="form-control layer-input" type="number" name="excess" value="25" min="0">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">m</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="layer-rate">
+                                        <div class="input-group">
+                                            <input class="form-control rate-input" type="number" name="rate" min="0">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">per m</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="layer-cost">
+                                        <div class="input-group">
+                                            <input class="form-control cost-output" type="number" name="cost" min="0" readonly>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">m</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
                     </div>
-                    <div id="method-inputs-frequencyseverity">
+                    <div class="method-inputs-frequencyseverity">
                     
                     </div>        
                 </div>
             </div>
-            <div id="layer-area">
-                <button class="layer-add">Add Layer</button>
-                <table>
+            <div class="layer-area">
+                <div class="layer-buttons">
+                    <button type="button" class="layer-buttons-add btn btn-primary btn-sm">Add</button>
+                    <button type="button" class="layer-buttons-remove btn btn-primary btn-sm">Remove</button>
+                </div>
+                <table class="table layer-table">
                     <thead>
-                        <th>
-                            <tr>
-                                <td>Limit (millions)</td>
-                                <td>Excess FGU (millions)</td>
-                                <td>Description</td>
-                                <td>Rate (units per million)</td>
-                                <td>Cost (millions)</td>
-                            </tr>
-                        </th>
+                        <tr>
+                            <th>Limit</th>
+                            <th></th>
+                            <th>Excess</th>
+                            <th>Rate</th>
+                            <th>Cost</th>
+                        </tr>
                     </thead>
                     <tbody>
                         <tr class="layer">
-                            <td class="layer-limit"><input type="number" class="layer-input"></td>
-                            <td class="layer-excess"><input type="number" class="layer-input"></td>
-                            <td class="layer-description"></td>
-                            <td class="layer-cost"></td>
-                            <td class="layer-rate"></td>
+                            <td class="layer-limit">
+                                <div class="input-group">
+                                    <input class="form-control layer-input" type="number" name="limit" min="0">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">m</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>xs</td>
+                            <td class="layer-excess">
+                                <div class="input-group">
+                                    <input class="form-control layer-input" type="number" name="excess" min="0">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">m</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="layer-rate">
+                                <div class="input-group">
+                                    <input class="form-control rate-output" type="number" name="rate" min="0" readonly>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">per m</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="layer-cost">
+                                <div class="input-group">
+                                    <input class="form-control cost-output" type="number" name="cost" min="0" readonly>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">m</span>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                     </tbody>
                     <tfoot>

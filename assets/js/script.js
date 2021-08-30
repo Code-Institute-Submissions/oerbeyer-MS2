@@ -6,7 +6,9 @@
  * @returns {Number} Single value (millions).
  */
 function CappedSeverity(sigma, alpha, cap) {
-    return 1 / ( 1 - alpha ) * ( cap ** ( 1 - alpha ) - sigma ** ( 1 - alpha ) );
+    let cappedSeverity = Math.pow(sigma, alpha) / ( 1 - alpha ) * ( Math.pow(cap, ( 1 - alpha )) - Math.pow(sigma, ( 1 - alpha )) );
+    console.log(['CappedSeverity', sigma, alpha, cap, cappedSeverity]);
+    return cappedSeverity
 }
 
 /**
@@ -20,7 +22,9 @@ function CappedSeverity(sigma, alpha, cap) {
 function LayerSeverity(sigma, alpha, limit, excess) {
     let cappedSeverityLimitPlusExcess = CappedSeverity(sigma, alpha, limit + excess);
     let cappedSeverityExcess = CappedSeverity(sigma, alpha, excess);
-    return cappedSeverityLimitPlusExcess - cappedSeverityExcess;
+    let layerSeverity = cappedSeverityLimitPlusExcess - cappedSeverityExcess;
+    console.log(['LayerSeverity', sigma, alpha, layerSeverity]);
+    return layerSeverity;
 }
 
 /**
@@ -36,7 +40,9 @@ function LayerSeverity(sigma, alpha, limit, excess) {
 function IlfFactor(sigma, alpha, limit1, excess1, limit2, excess2) {
     let layerSeverity1 = LayerSeverity(sigma, alpha, limit1, excess1);
     let layerSeverity2 = LayerSeverity(sigma, alpha, limit2, excess2);
-    return layerSeverity2 / layerSeverity1;
+    let ilfFactor = layerSeverity2 / layerSeverity1;
+    console.log(['IlfFactor', sigma, alpha, ilfFactor]);
+    return ilfFactor;
 }
 
 /**
@@ -52,7 +58,9 @@ function IlfFactor(sigma, alpha, limit1, excess1, limit2, excess2) {
 function RateRelativity(sigma, alpha, limit1, excess1, limit2, excess2) {
     let ilfFactor = IlfFactor(sigma, alpha, limit1, excess1, limit2, excess2);
     let limitsRatio = limit2 / limit1;
-    return ilfFactor / limitsRatio;
+    let rateRelativity = ilfFactor / limitsRatio;
+    console.log(['RateRelativity', sigma, alpha, rateRelativity]);
+    return rateRelativity;
 }
 
 /**
@@ -63,7 +71,9 @@ function RateRelativity(sigma, alpha, limit1, excess1, limit2, excess2) {
  * @returns {Number} Single value (percent).
  */
 function ExceedenceProbability(sigma, alpha, excess) {
-    return ( sigma / excess ) ** alpha;
+    let ep = ( sigma / excess ) ** alpha; 
+    console.log(['ExceedenceProbability', sigma, alpha, ep]);
+    return ep;
 }
 
 /**
@@ -81,6 +91,7 @@ function BaseRateILFCost(sigma, alpha, baseRate, baseLimit, baseExcess, limit, e
     let ilfFactor = IlfFactor(sigma, alpha, baseLimit, baseExcess, limit, excess);
     let cost = ( ( baseRate / 1000000 ) * baseLimit ) * ilfFactor;
     let rate = (cost * 1000000) / limit;
+    console.log(['BaseRateILFCost', sigma, alpha, cost, rate]);
     return [cost, rate];
 }
 
@@ -95,63 +106,152 @@ function BaseRateILFCost(sigma, alpha, baseRate, baseLimit, baseExcess, limit, e
  * @returns {Number} Array of cost (millions) and cost / limit (units).
  */
 function FrequencySeverityCost(sigma, alpha, baseCount, baseExcess, limit, excess) {
+    console.log('FrequencySeverityCost');
     epBaseExcess = ExceedenceProbability(sigma, alpha, baseExcess)
     epExcess = ExceedenceProbability(sigma, alpha, excess)
     let layerSeverity = LayerSeverity(sigma, alpha, limit, excess);
     let cost = ( ( epExcess / epBaseExcess ) * baseCount ) * layerSeverity;
     let rate = (cost * 1000000) / limit;
+    console.log([sigma, alpha, cost, rate]);
     return [cost, rate];
 }
 
 $('document').ready(function(){
-    
-    // Listen for click on add layer button.
-    $('.layer-add').click(function() {
 
-        let layer = $(this).siblings('table').children('tbody').children().last();
-        layer.clone().appendTo(layer.parent());
-
+    // Listen for click on add layer buttons.
+    $('.layer-buttons-add').click(function() {
+        let oldLayer = $(this).closest('.layer-area').find('tbody tr').last();
+        oldLayer.clone(true).appendTo(oldLayer.parent());
+        let newLayer = oldLayer.next();
+        newLayer.find('.layer-excess input').val(
+            parseFloat(oldLayer.find('.layer-limit input').val()) + parseFloat(oldLayer.find('.layer-excess input').val())
+        );
+        SetLayerCost(newLayer);
     });
 
-    // Listen for changes to limit or excess inputs.
-    $('.layer-input').change(function() {
-        
-        let layer = $(this).closest('.layer');
-
-        // Update the layer description when limit or excess inputs change.
-        layer.children('.layer-description').text(SetLayerDescriptionOnChange($(this)));
-
-        // Update the layer cost when limit or excess inputs change but only when rate change is also an input.
-        if (layer.find('.rate-input').length > 0) {
-            layer.children('.layer-cost').text(SetLayerCostOnChange($(this)));
+    // Listen for click on remove layer buttons.
+    $('.layer-buttons-remove').click(function() {
+        let layer = $(this).closest('.layer-area').find('tbody tr').last();
+        if (layer.siblings().length > 0) {
+            layer.remove();
         }
+    });
+
+    // Listen for change to ilf scale parameter.
+    $('.method-inputs-ilf input[name="ilfScale"]').change(function() {
+        console.log("ILF Scale Change")
+        // Recalculate all layers in the analaysis
+        analysis = $(this).closest('.analysis');
+        SetAllLayersCost(analysis);
+    });
+
+    // Listen for change to ilf shape parameter.
+    $('.method-inputs-ilf input[name="ilfShape"]').change(function() {
+        console.log("ILF Shape Change")
+        // Recalculate all layers in the analaysis
+        analysis = $(this).closest('.analysis');
+        SetAllLayersCost(analysis);
+    });
+
+    // Listen for change to rate for base rate + ilf method.
+    $('.method-inputs-baserateilf input[name="rate"]').change(function() {
+        console.log("Base Rate Change")
+        // Recalculate all layers in the analaysis
+        analysis = $(this).closest('.analysis');
+        layer = analysis.find('.method-area tbody tr')
+        ConvertRateToCost(layer)
+        SetAllLayersCost(analysis);
 
     });
 
-    // Listen for changes to the rate input.
-    $('.rate-input').change(function() {
-        
-        // Update the layer cost when rate input changes.
-        $(this).closest('.layer').children('.layer-cost').text(SetLayerCostOnChange($(this)));
+    // Listen for change to limit for base rate + ilf method.
+    $('.method-inputs-baserateilf input[name="limit"]').change(function() {
+        console.log("Base Limit Change")
+        // Recalculate all layers in the analaysis
+        analysis = $(this).closest('.analysis');
+        layer = analysis.find('.method-area tbody tr')
+        ConvertRateToCost(layer)
+        SetAllLayersCost(analysis);
+
+    });
+
+    // Listen for change to excess for base rate + ilf method.
+    $('.method-inputs-baserateilf input[name="excess"]').change(function() {
+        console.log("Base Excess Change")
+        // Recalculate all layers in the analaysis
+        analysis = $(this).closest('.analysis');
+        SetAllLayersCost(analysis);
+    });
+
+    // Listen for change to layers limit.
+    $('.layer-area input[name="limit"]').change(function() {
+        console.log("Layer Limit Change")
+        // Recalculate all layers in the analaysis
+        analysis = $(this).closest('.analysis');
+        SetAllLayersCost(analysis);
+    });
+
+    // Listen for change to layers excess.
+    $('.layer-area input[name="excess"]').change(function() {
+        console.log("Layer Excess Change")
+        // Recalculate all layers in the analaysis
+        analysis = $(this).closest('.analysis');
+        SetAllLayersCost(analysis);
     });
 
 });
 
-/**
- * Parses a string from Limit and Excess FGU layer inputs.
- * @param {Element} layer The <input class="layer-input"> element.
- * @returns {String} Limit xs Excess FGU
- */
-function SetLayerDescriptionOnChange(layerInput) {
-    let layer = layerInput.closest('.layer').children();
-    let limit = layer.filter('.layer-limit').children('.layer-input').val();
-    let excess = layer.filter('.layer-excess').children('.layer-input').val();
-    return `${limit}m xs ${excess}m`;
+function ConvertRateToCost(layer) {
+    let limit = parseFloat(layer.find('input[name="limit"]').val());
+    let rate = parseFloat(layer.find('input[name="rate"]').val());
+    layer.find('input[name="cost"]').val( rate / 1000000 * limit );
 }
 
-function SetLayerCostOnChange(layerInput) {
-    let layer = layerInput.closest('.layer').children();
-    let limit = layer.filter('.layer-limit').children('.layer-input').val();
-    let rate = layer.filter('.layer-rate').children('.rate-input').val();
-    return ( rate / 1000000 ) * limit
+function GetMethodInputs(method, analysis) {
+    if (method === "0") {
+        let baseRate = parseFloat(analysis.find('.method-inputs-baserateilf input[name="rate"]').val());
+        let baseLimit = parseFloat(analysis.find('.method-inputs-baserateilf input[name="limit"]').val());
+        let baseExcess = parseFloat(analysis.find('.method-inputs-baserateilf input[name="excess"]').val());
+        return [baseRate, baseLimit, baseExcess];
+    } else if (method === "1") {
+        let baseCount = parseFloat(analysis.find('.method-inputs-frequencyseverity input[name="count"]').val());
+        let baseExcess = parseFloat(analysis.find('.method-inputs-frequencyseverity input[name="excess"]').val());
+        return [baseCount, baseExcess];
+    }
+}
+
+function GetIlfInputs(analysis) {
+    let sigma = parseFloat(analysis.find('.method-inputs-ilf input[name="ilfScale"]').val());
+    let alpha = parseFloat(analysis.find('.method-inputs-ilf input[name="ilfShape"]').val());
+    return [sigma, alpha];
+}
+
+function GetLayerInputs(layer) {
+    let limit = parseFloat(layer.find('input[name="limit"]').val());
+    let excess = parseFloat(layer.find('input[name="excess"]').val());
+    return [limit, excess];
+}
+
+function SetLayerCost(layer) {
+    console.log("SetLayerCost");
+    let layerInputs = GetLayerInputs(layer);
+    let analysis = layer.closest('.analysis');
+    let ilfInputs = GetIlfInputs(analysis);
+    let method = analysis.find('input[name="method"]:checked').val();
+    if (method === "0") {
+        let methodInputs = GetMethodInputs(method, analysis);                
+        let cost = BaseRateILFCost(ilfInputs[0], ilfInputs[1], methodInputs[0], methodInputs[1], methodInputs[2], layerInputs[0], layerInputs[1])
+        layer.find('input[name="rate"]').val(String(Math.round(cost[1])));
+        layer.find('input[name="cost"]').val(String(Math.round( cost[0] *  1000 ) / 1000));
+    } else if (method === "1") {
+
+    }
+}
+
+function SetAllLayersCost(analysis) {
+    console.log('SetAllLayersCost');
+    let layers = analysis.find('.layer-area tbody tr');
+    layers.each(function(){
+        SetLayerCost($(this));
+    });
 }
