@@ -12,7 +12,7 @@
 </head>
 <body>
     <div class="analysis-area">
-        <h3>Analyses</h3>
+        <h3>Analysis</h3>
         <div class="analysis-buttons">
             <button type="button" class="analysis-buttons-add btn btn-secondary btn-md">Add</button>
             <button type="button" class="analysis-buttons-remove btn btn-secondary btn-md">Remove</button>
@@ -23,12 +23,12 @@
                     <h4>Method Pick</h4>
                     <form>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input method-select-baserate" type="radio" name="method" value="0" checked>
-                            <label class="form-check-label">Base Rate & ILF</label>
+                            <input class="form-check-input method-select-baserate" id="method-select-baserate" type="radio" name="method" value="0" checked>
+                            <label class="form-check-label" for="method-select-baserate">Base Rate & ILF</label>
                           </div>
                           <div class="form-check form-check-inline">
-                            <input class="form-check-input method-select-frequency" type="radio" name="method" value="1">
-                            <label class="form-check-label">Frequency & Severity</label>
+                            <input class="form-check-input method-select-frequency" id="method-select-frequency" type="radio" name="method" value="1">
+                            <label class="form-check-label" for="method-select-frequency">Frequency & Severity</label>
                         </div>
                     </form>
                 </div>
@@ -36,7 +36,7 @@
                     <div class="method-inputs-baserate">
                         <h4>Base Rate Pick</h4>
                         <h6>Pick your base layer (limit and excess) and the base rate (rate) per risk per policy year.</h6>
-                        <p>Your base rate pick must include exposure adjustments for the associated base layer pick.</p>
+                        <p>Your base rate pick must include exposure adjustments for the associated base layer pick, and loadings for profits and costs.</p>
                         <table class="table layer-table">
                             <thead>
                                 <tr>
@@ -91,7 +91,7 @@
                     <div class="method-inputs-frequency" style="display:none">
                         <h4>Frequency Pick</h4>
                         <h6>Pick your large loss threshold FGU (excess) and the average number of large losses (count) per risk per policy year.</h6>
-                        <p>Your frequency pick must include exposure adjustments for the associated excess pick.</p>
+                        <p>Your frequency pick must include exposure adjustments for the associated excess pick, and loadings for profits and costs.</p>
                         <table class="table layer-table">
                             <thead>
                                 <tr>
@@ -126,7 +126,7 @@
                     <div class="method-inputs-ilf">
                         <h4>ILF/Severity Pick</h4>
                         <h6>Pick your large loss FGU threshold (scale) and the large loss distribution (shape).</h6>
-                        <p>Your shape pick must include exposure adjustments not already included in the base rate or frequency pick. Your shape pick must be greater than zero (and never one). The lower/higher the shape pick, the heavier/lighter the large loss distribution.</p>
+                        <p>Your shape pick should include exposure adjustments and loadings for profits and costs not already included in the base rate pick or frequency pick. Your shape pick must be greater than zero (and never one). The lower/higher the shape pick, the heavier/lighter the large loss distribution.</p>
                         <table class="table">
                             <thead>
                                 <tr>
