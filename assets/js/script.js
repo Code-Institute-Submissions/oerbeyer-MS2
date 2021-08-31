@@ -120,7 +120,7 @@ $('document').ready(function () {
     $('.method-inputs-frequency input[name="count"]').change(function () {
         console.log("Base Count Change");
         let analysis = $(this).closest('.analysis');
-        
+
         // Calculate layer costs.
         SetAllLayersCost(analysis);
     });
