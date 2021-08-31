@@ -41,7 +41,7 @@
                         <h6>Pick your base layer (limit and excess) and the base rate (rate) per risk per policy year.</h6>
                         <p>Your base rate pick must include exposure adjustments for the associated base layer pick, and loadings for profits and costs.</p>
                         <table class="table layer-table">
-                            <thead>
+                            <thead class="thead-dark">
                                 <tr>
                                     <th>Limit</th>
                                     <th></th>
@@ -96,7 +96,7 @@
                         <h6>Pick your large loss threshold FGU (excess) and the average number of large losses (count) per risk per policy year.</h6>
                         <p>Your frequency pick must include exposure adjustments for the associated excess pick, and loadings for profits and costs.</p>
                         <table class="table layer-table">
-                            <thead>
+                            <thead class="thead-dark">
                                 <tr>
                                     <th>Count</th>
                                     <th>Excess</th>
@@ -132,7 +132,7 @@
                         <p>Your shape pick should include exposure adjustments and loadings for profits and costs not already included in the base rate pick or frequency pick.</p>
                         <p>Your shape pick must be greater than zero (and never one). The lower/higher the shape pick, the heavier/lighter the large loss distribution.</p>
                         <table class="table">
-                            <thead>
+                            <thead class="thead-dark">
                                 <tr>
                                     <th>Scale</th>
                                     <th>Shape</th>
@@ -141,7 +141,7 @@
                             <tbody>
                                 <tr>
                                     <td><input class="method-inputs-ilf-scale" type="number" name="ilfScale" value="1"></td>
-                                    <td><input class="method-inputs-ilf-shape" type="number" name="ilfShape" value="0.8"></td>
+                                    <td><input class="method-inputs-ilf-shape" type="number" name="ilfShape" value="0.85"></td>
                                 </tr>
                             </tbody>
                             <tfoot>
@@ -160,7 +160,7 @@
                     <button type="button" class="layer-buttons-remove btn btn-secondary btn-md">Remove</button>
                 </div>
                 <table class="table layer-table">
-                    <thead>
+                    <thead class="thead-dark">
                         <tr>
                             <th>Limit</th>
                             <th></th>

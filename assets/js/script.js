@@ -242,7 +242,7 @@ $('document').ready(function(){
 function ConvertRateToCost(layer) {
     let limit = parseFloat(layer.find('input[name="limit"]').val());
     let rate = parseFloat(layer.find('input[name="rate"]').val());
-    layer.find('input[name="cost"]').val( rate / 1000000 * limit );
+    layer.find('input[name="cost"]').val(Math.round( ( rate / 1000000 * limit ) *  1000 ) / 1000);
 }
 
 function GetMethodInputs(method, analysis) {
