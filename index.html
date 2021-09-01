@@ -9,238 +9,217 @@
         content="Calculates the price for excess casualty layers of insurance using either the Base Rate + ILF method or the Frequency + Severity method" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css" type="text/css">
     <title>Excess Casualty Calculator</title>
 </head>
 
 <body>
-    <div class="analysis-area">
-        <h3>Analysis</h3>
-        <div class="analysis-buttons">
-            <button type="button" class="analysis-buttons-add btn btn-secondary btn-md">Add</button>
-            <button type="button" class="analysis-buttons-remove btn btn-secondary btn-md">Remove</button>
-        </div>
-        <div class="analysis">
-            <div class="method-area">
-                <div class="method-select">
-                    <h4>Step 01: Method Pick</h4>
-                    <h6>Pick either a Base Rate + ILF mathod or a Frequency & Severity method.</h6>
-                    <p>If you pick Base Rate + ILF you will need to pick a base rate and associated base layer, and a
-                        severity distribution.</p>
-                    <p>If you pick Frequency & Severity you will needs to pick a large loss threshold and average count,
-                        and a severity distribution.</p>
-                    <form>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input method-select-baserate" id="method-select-baserate"
-                                type="radio" name="method" value="0" checked>
-                            <label class="form-check-label" for="method-select-baserate">Base Rate & ILF</label>
+    <header>
+        <nav class="navbar navbar-dark bg-dark">
+            <span class="navbar-brand mb-0 h1">
+                <i class="fas fa-calculator pr-2"></i>
+                Excess Casualty Calculator
+            </span>
+        </nav>
+    </header>
+    <main>
+        <article class="analysis-area container">
+            <section class="analysis">
+                <section class="method-area">
+                    <section class="method-select">
+                        <div class="row">
+                            <p class="step"><strong>Step 1 - Pick your method - </strong>Pick either a Base Rate + ILF
+                                method or a Frequency & Severity method.</p>
+                            <p class="small">If you pick Base Rate + ILF you will need to pick a base rate and
+                                associated base layer, and a severity distribution.</p>
                         </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input method-select-frequency" id="method-select-frequency"
-                                type="radio" name="method" value="1">
-                            <label class="form-check-label" for="method-select-frequency">Frequency & Severity</label>
+                        <div class="row justify-content-center pb-3 bg-light">
+                            <form>
+                                <div class="form-check">
+                                    <input class="form-check-input method-select-baserate" id="method-select-baserate"
+                                        type="radio" name="method" value="0" checked>
+                                    <label class="form-check-label" for="method-select-baserate">Base Rate & ILF</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input method-select-frequency" id="method-select-frequency"
+                                        type="radio" name="method" value="1">
+                                    <label class="form-check-label" for="method-select-frequency">Frequency &
+                                        Severity</label>
+                                </div>
+                            </form>
                         </div>
-                    </form>
-                </div>
-                <div class="method-inputs">
-                    <div class="method-inputs-baserate">
-                        <h4>Step 02: Base Rate Pick</h4>
-                        <h6>Pick your base layer (limit and excess) and the base rate (rate) per risk per policy year.
-                        </h6>
-                        <p>Your base rate pick must include exposure adjustments for the associated base layer pick, and
-                            loadings for profits and costs.</p>
+                    </section>
+                    <section class="method-inputs">
+                        <section class="method-inputs-baserate">
+                            <div class="row">
+                                <p class="step"><strong>Step 2 - Pick your base rate - </strong>Pick a base layer
+                                    (limit & excess) and either a base rate (rate) or base cost (cost) per risk per
+                                    policy year.</p>
+                                <p class="small">Your rate or cost pick must include exposure adjustments for the
+                                    associated base layer, as well as loadings for profits and costs.</p>
+                            </div>
+                            <div class="row justify-content-center">
+                                <table class="table layer-table">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>
+                                                <p>Limit</p>
+                                                <p class="small mb-0">(m)</p>
+                                            </th>
+                                            <th></th>
+                                            <th>
+                                                <p>Excess</p>
+                                                <p class="small mb-0">(m)</p>
+                                            </th>
+                                            <th>
+                                                <p>Rate</p>
+                                                <p class="small mb-0">(per m)</p>
+                                            </th>
+                                            <th>
+                                                <p>Cost</p>
+                                                <p class="small mb-0">(m)</p>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="layer">
+                                            <td class="layer-limit"><input class="form-control layer-input"
+                                                    type="number" name="limit" value="25" min="0"></td>
+                                            <td>xs</td>
+                                            <td class="layer-excess"><input class="form-control layer-input"
+                                                    type="number" name="excess" value="25" min="0"></td>
+                                            <td class="layer-rate"><input class="form-control rate-input" type="number"
+                                                    name="rate" min="0"></td>
+                                            <td class="layer-cost"><input class="form-control cost-input" type="number"
+                                                    name="cost" min="0"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                        <section class="method-inputs-frequency">
+                            <div class="row">
+                                <p class="step"><strong>Step 2 - Pick your frequency - </strong>Pick a large loss
+                                    threshold FGU (excess) and an average count of large losses (count) per risk per
+                                    policy year.</p>
+                                <p class="small">Your count pick must include exposure adjustments for the
+                                    associated excess as well as loadings for profits and costs.</p>
+                            </div>
+                            <div class="row justify-content-center">
+                                <table class="table layer-table">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>
+                                                <p>Count</p>
+                                                <p class="small mb-0">(#)</p>
+                                            </th>
+                                            <th>
+                                                <p>Excess</p>
+                                                <p class="small mb-0">(m)</p>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><input class="form-control" type="number" step="0.05" name="count"
+                                                    value="1" min="0"></td>
+                                            <td><input class="form-control" type="number" name="excess" value="1"
+                                                    min="0"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+                        <section class="method-inputs-ilf">
+                            <div class="row">
+                                <p class="step"><strong>Step 3 - Pick your severity curve - </strong>Pick a large loss
+                                    FGU threshold (scale) and a large loss severity distribution (shape).</p>
+                                <p class="small">Your shape pick should include exposure adjustments as well as loadings
+                                    for profits and costs not already included in the base rate pick or frequency pick.
+                                    Your shape pick must be greater than zero (and never one). The lower/higher the
+                                    shape pick, the heavier/lighter the large loss distribution.</p>
+                            </div>
+                            <div class="row justify-content-center">
+                                <table class="table">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Scale</th>
+                                            <th>Shape</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><input class="form-control method-inputs-ilf-scale" type="number"
+                                                    name="ilfScale" value="1"></td>
+                                            <td><input class="form-control method-inputs-ilf-shape" type="number"
+                                                    step="0.05" name="ilfShape" value="0.85"></td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+                <section class="layer-area">
+                    <div class="row">
+                        <p class="step"><strong>Step 4 - Pick your layers - </strong>Pick the layers (limit & excess)
+                            that you want to price. Use the buttons to add or remove layers.</p>
+                        <p class="small">Pricing will update when you change any of your picks.</p>
+                    </div>
+                    <div class="row justify-content-center layer-buttons pt-3 pb-4">
+                        <button type="button" class="layer-buttons-add mx-2 btn btn-secondary btn-md">Add</button>
+                        <button type="button" class="layer-buttons-remove mx-2 btn btn-secondary btn-md">Remove</button>
+                    </div>
+                    <div class="row justify-content-center">
                         <table class="table layer-table">
-                            <thead class="thead-dark">
+                            <thead class="thead-light">
                                 <tr>
-                                    <th>Limit</th>
+                                    <th>
+                                        <p>Limit</p>
+                                        <p class="small mb-0">(m)</p>
+                                    </th>
                                     <th></th>
-                                    <th>Excess</th>
-                                    <th>Rate</th>
-                                    <th>Cost</th>
+                                    <th>
+                                        <p>Excess</p>
+                                        <p class="small mb-0">(m)</p>
+                                    </th>
+                                    <th>
+                                        <p>Rate</p>
+                                        <p class="small mb-0">(per m)</p>
+                                    </th>
+                                    <th>
+                                        <p>Cost</p>
+                                        <p class="small mb-0">(m)</p>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr class="layer">
                                     <td class="layer-limit">
-                                        <div class="input-group">
-                                            <input class="form-control layer-input" type="number" name="limit"
-                                                value="25" min="0">
-                                            <div class="input-group-append">
-                                                <span class="input-group-text">m</span>
-                                            </div>
-                                        </div>
+                                        <div class="input-group"><input class="form-control layer-input" type="number"
+                                                name="limit" min="0" value="25">
                                     </td>
                                     <td>xs</td>
                                     <td class="layer-excess">
-                                        <div class="input-group">
-                                            <input class="form-control layer-input" type="number" name="excess"
-                                                value="25" min="0">
-                                            <div class="input-group-append">
-                                                <span class="input-group-text">m</span>
-                                            </div>
-                                        </div>
+                                        <div class="input-group"><input class="form-control layer-input" type="number"
+                                                name="excess" min="0" value="25">
                                     </td>
-                                    <td class="layer-rate">
-                                        <div class="input-group">
-                                            <input class="form-control rate-input" type="number" name="rate" min="0">
-                                            <div class="input-group-append">
-                                                <span class="input-group-text">per m</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="layer-cost">
-                                        <div class="input-group">
-                                            <input class="form-control cost-input" type="number" name="cost" min="0">
-                                            <div class="input-group-append">
-                                                <span class="input-group-text">m</span>
-                                            </div>
-                                        </div>
-                                    </td>
+                                    <td class="layer-rate"><input class="form-control rate-output" type="number"
+                                            name="rate" min="0" readonly></td>
+                                    <td class="layer-cost"><input class="form-control cost-output" type="number"
+                                            name="cost" min="0" readonly></td>
                                 </tr>
                             </tbody>
-                            <tfoot>
-                            </tfoot>
                         </table>
                     </div>
-                    <div class="method-inputs-frequency" style="display:none">
-                        <h4>Step 02: Frequency Pick</h4>
-                        <h6>Pick your large loss threshold FGU (excess) and the average number of large losses (count)
-                            per
-                            risk per policy year.</h6>
-                        <p>Your frequency pick must include exposure adjustments for the associated excess pick, and
-                            loadings for profits and costs.</p>
-                        <table class="table layer-table">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>Count</th>
-                                    <th>Excess</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="input-group">
-                                            <input class="form-control" type="number" step="0.05" name="count" value="1"
-                                                min="0">
-                                            <div class="input-group-append">
-                                                <span class="input-group-text">#</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="input-group">
-                                            <input class="form-control" type="number" name="excess" value="1" min="0">
-                                            <div class="input-group-append">
-                                                <span class="input-group-text">m</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                            <tfoot>
-
-                            </tfoot>
-                        </table>
-                    </div>
-                    <div class="method-inputs-ilf">
-                        <h4>Step 03: ILF/Severity Pick</h4>
-                        <h6>Pick your large loss FGU threshold (scale) and the large loss distribution (shape).</h6>
-                        <p>Your shape pick should include exposure adjustments and loadings for profits and costs not
-                            already included in the base rate pick or frequency pick.</p>
-                        <p>Your shape pick must be greater than zero (and never one). The lower/higher the shape pick,
-                            the
-                            heavier/lighter the large loss distribution.</p>
-                        <table class="table">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>Scale</th>
-                                    <th>Shape</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><input class="method-inputs-ilf-scale" type="number" name="ilfScale" value="1">
-                                    </td>
-                                    <td><input class="method-inputs-ilf-shape" type="number" step="0.05" name="ilfShape"
-                                            value="0.85"></td>
-                                </tr>
-                            </tbody>
-                            <tfoot>
-
-                            </tfoot>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="layer-area">
-                <h4>Step 04: Layers</h4>
-                <h6>Pick the layers that you want to price. Use the buttons to add or remove layers.</h6>
-                <p>Pricing will update when you change your selected method, your picks or your layer limits and
-                    excesses.
-                </p>
-                <div class="layer-buttons">
-                    <button type="button" class="layer-buttons-add btn btn-secondary btn-md">Add</button>
-                    <button type="button" class="layer-buttons-remove btn btn-secondary btn-md">Remove</button>
-                </div>
-                <table class="table layer-table">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>Limit</th>
-                            <th></th>
-                            <th>Excess</th>
-                            <th>Rate</th>
-                            <th>Cost</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="layer">
-                            <td class="layer-limit">
-                                <div class="input-group">
-                                    <input class="form-control layer-input" type="number" name="limit" min="0"
-                                        value="25">
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">m</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>xs</td>
-                            <td class="layer-excess">
-                                <div class="input-group">
-                                    <input class="form-control layer-input" type="number" name="excess" min="0"
-                                        value="25">
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">m</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="layer-rate">
-                                <div class="input-group">
-                                    <input class="form-control rate-output" type="number" name="rate" min="0" readonly>
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">per m</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="layer-cost">
-                                <div class="input-group">
-                                    <input class="form-control cost-output" type="number" name="cost" min="0" readonly>
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">m</span>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script> -->
-    <script src="assets/js/jquery-3.5.1.js"></script>
+                </section>
+            </section>
+        </article>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
     <script src="assets/js/script.js"></script>

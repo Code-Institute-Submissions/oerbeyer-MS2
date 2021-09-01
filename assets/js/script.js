@@ -151,7 +151,6 @@ $('document').ready(function () {
         // Calculate layer costs.
         SetAllLayersCost(analysis);
     });
-
 });
 
 /**
@@ -186,6 +185,11 @@ function BaseRateILFCost(sigma, alpha, baseRate, baseLimit, baseExcess, limit, e
     return cappedSeverity
 }
 
+/**
+ * Converts rate to cost or cost to rate depending on name when event is triggered.
+ * @param {JQuery object} layer 
+ * @param {String} name 
+ */
 function ConvertRateAndCost(layer, name) {
     let limit = parseFloat(layer.find('input[name="limit"]').val());
     if (name === 'rate') {
@@ -231,18 +235,34 @@ function FrequencySeverityCost(sigma, alpha, baseCount, baseExcess, limit, exces
     return [cost, rate];
 }
 
+/**
+ * Gets Pareto Type I scale and shape parameters when an event is triggered.
+ * @param {JQuery obect} analysis Analysis.
+ * @returns {Number} Array of scale (sigma) and shape (alpha).
+ */
 function GetIlfInputs(analysis) {
     let sigma = parseFloat(analysis.find('.method-inputs-ilf input[name="ilfScale"]').val());
     let alpha = parseFloat(analysis.find('.method-inputs-ilf input[name="ilfShape"]').val());
     return [sigma, alpha];
 }
 
+/**
+ * Gets layer limit and excess when an event is triggered.
+ * @param {JQuery obect} layer Layer. 
+ * @returns {Number} Array of scale (sigma) and shape (alpha).
+ */
 function GetLayerInputs(layer) {
     let limit = parseFloat(layer.find('input[name="limit"]').val());
     let excess = parseFloat(layer.find('input[name="excess"]').val());
     return [limit, excess];
 }
 
+/**
+ * Getseither base rate or frequency parameters depending on method selected when an event is triggered.
+ * @param {String} method "0" = base rate and "1" = frequency. 
+ * @param {JQuery obect} analysis Analysis. 
+ * @returns {Number} Array of scale (sigma) and shape (alpha).
+ */
 function GetMethodInputs(method, analysis) {
     if (method === "0") {
         let baseRate = parseFloat(analysis.find('.method-inputs-baserate input[name="rate"]').val());
@@ -308,6 +328,10 @@ function GetMethodInputs(method, analysis) {
     return rateRelativity;
 }
 
+/**
+ * Calculates the layer rate and cost for all layers when an event is triggered.
+ * @param {JQuery object} analysis Analysis. 
+ */
 function SetAllLayersCost(analysis) {
     console.log('SetAllLayersCost');
     let layers = analysis.find('.layer-area tbody tr');
@@ -316,6 +340,10 @@ function SetAllLayersCost(analysis) {
     });
 }
 
+/**
+ * Calculates the layer rate and cost for a single layers when an event is triggered.
+ * @param {JQuery object} layer Layer.
+ */
 function SetLayerCost(layer) {
     console.log("SetLayerCost");
     let layerInputs = GetLayerInputs(layer);
