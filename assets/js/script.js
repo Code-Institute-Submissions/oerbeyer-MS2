@@ -3,7 +3,7 @@ $('document').ready(function () {
     // Listen for key press enter to trigger layer cost calculations.
     $('input').keypress(function (event) {
         console.log("Enter Key Press");
-        var keycode = (event.keyCode ? event.keyCode : event.which);
+        let keycode = (event.keyCode ? event.keyCode : event.which);
         if (keycode == '13') {
             let analysis = $(this).closest('.analysis');
             SetAllLayersCost(analysis);
@@ -80,7 +80,7 @@ $('document').ready(function () {
         let layer = analysis.find('.method-area tbody tr');
         
         // Convert base rate to base cost and calculate layer costs.
-        ConvertRateAndCost(layer, name)
+        ConvertRateAndCost(layer, name);
         SetAllLayersCost(analysis);
     });
 
@@ -92,7 +92,7 @@ $('document').ready(function () {
         let layer = analysis.find('.method-area tbody tr');
         
         // Convert base cost to base rate and calculate layer costs.
-        ConvertRateAndCost(layer, name)
+        ConvertRateAndCost(layer, name);
         SetAllLayersCost(analysis);
     });
 
@@ -103,7 +103,7 @@ $('document').ready(function () {
         let layer = analysis.find('.method-area tbody tr');
         
         // Convert base cost to base rate and calculate layer costs.
-        ConvertRateAndCost(layer, 'cost')
+        ConvertRateAndCost(layer, 'cost');
         SetAllLayersCost(analysis);
     });
 
@@ -182,7 +182,7 @@ function BaseRateILFCost(sigma, alpha, baseRate, baseLimit, baseExcess, limit, e
  function CappedSeverity(sigma, alpha, cap) {
     let cappedSeverity = Math.pow(sigma, alpha) / (1 - alpha) * (Math.pow(cap, (1 - alpha)) - Math.pow(sigma, (1 - alpha)));
     console.log(['CappedSeverity', sigma, alpha, cap, cappedSeverity]);
-    return cappedSeverity
+    return cappedSeverity;
 }
 
 /**
@@ -209,7 +209,7 @@ function ConvertRateAndCost(layer, name) {
  * @returns {Number} Single value (percent).
  */
  function ExceedenceProbability(sigma, alpha, excess) {
-    let ep = (sigma / excess) ** alpha;
+    let ep = Math.pow((sigma / excess), alpha);
     console.log(['ExceedenceProbability', sigma, alpha, excess, ep]);
     return ep;
 }
@@ -226,8 +226,8 @@ function ConvertRateAndCost(layer, name) {
  */
 function FrequencySeverityCost(sigma, alpha, baseCount, baseExcess, limit, excess) {
     console.log('FrequencySeverityCost');
-    epBaseExcess = ExceedenceProbability(sigma, alpha, baseExcess)
-    epExcess = ExceedenceProbability(sigma, alpha, excess)
+    let epBaseExcess = ExceedenceProbability(sigma, alpha, baseExcess);
+    let epExcess = ExceedenceProbability(sigma, alpha, excess);
     let layerSeverity = LayerSeverity(sigma, alpha, limit, excess);
     let cost = ((epExcess / epBaseExcess) * baseCount) * layerSeverity;
     let rate = (cost * 1000000) / limit;
